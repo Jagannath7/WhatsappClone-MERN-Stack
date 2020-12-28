@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import connection_url from './connection.js'
 import Messages from './dbmessages.js'
 import pusher_config from './pusher.js'
+import cors from 'cors'
 //app config
 const app = express()
 const port = process.env.PORT || 9000
@@ -13,7 +14,7 @@ const pusher = pusher_config
 
 //middleware
 app.use(express.json())
-
+app.use(cors())
 
 // db config
 mongoose.connect(connection_url, {
