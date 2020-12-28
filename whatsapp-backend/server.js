@@ -3,18 +3,12 @@ import express from 'express'
 import mongoose from 'mongoose'
 import connection_url from './connection.js'
 import Messages from './dbmessages.js'
-import Pusher from 'pusher'
+import pusher_config from './pusher.js'
 //app config
 const app = express()
 const port = process.env.PORT || 9000
 
-const pusher = new Pusher({
-    appId: "1129345",
-    key: "cee6d29a21749a5d681b",
-    secret: "17c257bafe4eee375de9",
-    cluster: "ap2",
-    useTLS: true
-  });
+const pusher = pusher_config
 
 
 //middleware
@@ -45,7 +39,9 @@ db.once('open', () => {
             pusher.trigger('messages', 'inserted',
             {
                 name: messageDetails.name,
-                message: messageDetails.message
+                message: messageDetails.message,
+                timestamp: messageDetails.timestamp,
+                received: messageDetails.received
                 })
         } else {
             console.log('error triggering pusher')
